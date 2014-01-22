@@ -1,44 +1,50 @@
 package org.waman.washiki;
 
 import java.util.Random;
+
 import static java.lang.Math.*;
 
-class PolarRandomGenerator{
+public class RandomOnSphere implements RandomPointGenerator{
 
-    private final Random random;
+    private final RandomGenerator random;
+
+    public RandomOnSphere(){
+        this(Math::random);
+    }
+
+    public RandomOnSphere(long seed){
+        this(new Random(seed)::nextDouble);
+    }
      
-    public PolarRandomGenerator(Random random){
+    public RandomOnSphere(RandomGenerator random){
         this.random = random;
     }
- 
-    private double nextDouble(){
-        return this.random.nextDouble();
-    }
- 
+
     private double nextPhi(){
-        return 2.0 * PI * this.random.nextDouble();
+        return 2.0 * PI * random.nextDouble();
     }
  
     /**
-     * @param x (n-1) 次元球面 (n >= 2)上において、
-     * 一様分布するランダムな点の n 次元座標をセットする配列
+     * @param x array to which coordinate of a random point on (n-1)-sphere (n >= 2) is set.
      */
-    void setRandomPoint(double[] x){
+    public void setRandomPoint(double[] x){
         setRandomPoint(x, x.length);
     }
 
     private void setRandomPoint(double[] x, int n){
-        switch(n){  // n は(球面の次元 + 1) に注意。　(n-1) 次元球面上の一様分布を生成
+        switch(n){
+            case 1:
+                throw new IllegalArgumentException("Argument array must have at least 2 length.");
             case 2:
-                setRandomPointOnCircumference(x);  // 円周上（1次元）上の一様分布
+                setRandomPointOnCircumference(x);
                 break;
             
             case 3:
-                setRandomPointOnSphere2D(x);  // 普通の球面（2次元）上の一様分布
+                setRandomPointOnSphere2D(x);
                 break;
             
             default:
-                setRandomPointOnSphereND(x, n);  // n >= 4 のとき
+                setRandomPointOnSphereND(x, n);
         }
     }
 
@@ -55,7 +61,7 @@ class PolarRandomGenerator{
         assert x.length == 3;
      
         double phi = nextPhi();
-        double sinTheta = nextDouble() * 2.0 - 1.0;  // 区間 [-1, 1] での一様分布
+        double sinTheta = this.random.nextDouble() * 2.0 - 1.0;  // uniform distribution in [-1, 1]
         double cosTheta = sqrt(1 - sinTheta * sinTheta);
      
         x[0] = sinTheta;
@@ -66,10 +72,10 @@ class PolarRandomGenerator{
     private void setRandomPointOnSphereND(double[] x, int n){
         assert n >= 4;
      
-        setRandomPoint(x, n - 2);  // (n-3) 次元球面上の一様分布を生成
+        setRandomPoint(x, n - 2);  // generate the uniform distribution on (n-3)-sphere
 
         double phi = nextPhi();
-        double theta = nextDouble();
+        double theta = this.random.nextDouble();
         double sinTheta = pow(theta, 1.0/(n-2.0));
         double cosTheta = sqrt(1 - sinTheta * sinTheta);
      
