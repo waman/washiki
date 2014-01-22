@@ -1,21 +1,23 @@
 apply plugin:'groovy'
 apply plugin:'maven'
+apply plugin:'idea'
 
 group = 'org.waman.washiki'
 version = 0.1
 
-def jdkVersion = '1.7'
+def langLevel = '1.8'
 def enc = 'UTF-8'
 
-sourceCompatibility = jdkVersion
-targetCompatibility = jdkVersion
+sourceCompatibility = langLevel
+targetCompatibility = langLevel
 tasks.withType(Compile){ options.encoding = enc }
 
 repositories.mavenCentral()
 
 dependencies {
-    testCompile "org.codehaus.groovy:groovy-all:2.2.1"
+    testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+    testCompile 'org.apache.commons:commons-math3:3.2'
 }
 
 uploadArchives {
@@ -28,4 +30,17 @@ uploadArchives {
 
 task wrapper(type: Wrapper) {
     gradleVersion = 1.10
+}
+
+//***** Settings for IntelliJ IDEA *****
+idea{
+    project{
+        jdkName = langLevel
+        languageLevel = langLevel
+    }
+
+    module{
+        downloadJavadoc = true
+        downloadSources = false
+    }
 }
