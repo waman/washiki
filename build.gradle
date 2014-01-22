@@ -1,0 +1,31 @@
+apply plugin:'groovy'
+apply plugin:'maven'
+
+group = 'org.waman.washiki'
+version = 0.1
+
+def jdkVersion = '1.7'
+def enc = 'UTF-8'
+
+sourceCompatibility = jdkVersion
+targetCompatibility = jdkVersion
+tasks.withType(Compile){ options.encoding = enc }
+
+repositories.mavenCentral()
+
+dependencies {
+    testCompile "org.codehaus.groovy:groovy-all:2.2.1"
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+}
+
+uploadArchives {
+    repositories{
+        mavenDeployer {
+            repository(url: "file://$projectDir/../repo")
+       }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = 1.10
+}
