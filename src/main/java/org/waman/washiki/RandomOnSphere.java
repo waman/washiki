@@ -1,10 +1,9 @@
 package org.waman.washiki;
 
 import java.util.Random;
-
 import static java.lang.Math.*;
 
-public class RandomOnSphere implements RandomPointGenerator{
+public class RandomOnSphere extends RandomPointGenerator{
 
     private final RandomGenerator random;
 
@@ -23,10 +22,16 @@ public class RandomOnSphere implements RandomPointGenerator{
     private double nextPhi(){
         return 2.0 * PI * random.nextDouble();
     }
- 
+
+    @Override
+    public RandomGenerator getRandomGenerator() {
+        return this.random;
+    }
+
     /**
      * @param x array to which coordinate of a random point on (n-1)-sphere (n >= 2) is set.
      */
+    @Override
     public void setRandomPoint(double[] x){
         setRandomPoint(x, x.length);
     }

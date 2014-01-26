@@ -1,10 +1,11 @@
 package org.waman.washiki;
 
-public interface RandomPointGenerator{
+abstract class RandomPointGenerator{
 
-    void setRandomPoint(double[] x);
+    public abstract RandomGenerator getRandomGenerator();
+    public abstract void setRandomPoint(double[] x);
 
-    default double[] newRandomPoint(int n){
+    public double[] newRandomPoint(int n){
         double[] x = new double[n];
         setRandomPoint(x);
         return x;

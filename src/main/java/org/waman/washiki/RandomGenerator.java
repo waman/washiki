@@ -8,4 +8,8 @@ public interface RandomGenerator{
     default double nextDouble(double max){
         return max * nextDouble();
     }
+
+    default double nextDouble(double min, double max){
+        return (max - min) * nextDouble() + min;
+    }
 }
