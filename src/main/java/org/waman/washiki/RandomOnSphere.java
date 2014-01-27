@@ -20,7 +20,7 @@ public class RandomOnSphere extends RandomPointGenerator{
     }
 
     private double nextPhi(){
-        return 2.0 * PI * random.nextDouble();
+        return this.random.nextDouble(2.0 * PI);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class RandomOnSphere extends RandomPointGenerator{
         assert x.length == 3;
      
         double phi = nextPhi();
-        double sinTheta = this.random.nextDouble() * 2.0 - 1.0;  // uniform distribution in [-1, 1]
+        double sinTheta = this.random.nextDouble(-1.0, 2.0);  // uniform distribution in [-1, 1] (min:-1.0, width:2.0)
         double cosTheta = sqrt(1 - sinTheta * sinTheta);
      
         x[0] = sinTheta;

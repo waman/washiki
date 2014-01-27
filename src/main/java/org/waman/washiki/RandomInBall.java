@@ -32,9 +32,6 @@ public class RandomInBall extends RandomPointGenerator{
     public void setRandomPoint(double[] x){
         int n = x.length;
         this.random.setRandomPoint(x);
-        double r = pow(getRandomGenerator().nextDouble(), 1.0/n);
-
-        for(int i = 0; i < n; i++)
-            x[i] *= r;
+        enlarge(x, pow(getRandomGenerator().nextDouble(), 1.0/n));
     }
 }
